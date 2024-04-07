@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"snake-game/screen"
 	"snake-game/snake"
+	"time"
 
 	"snake-game/utils"
 	"strings"
@@ -29,6 +30,7 @@ type Game interface {
 
 type game struct {
 	isRunning bool
+	fps       int
 	score     int
 	screen    screen.Screen
 	letters   []utils.Block
@@ -70,6 +72,7 @@ func NewGame() Game {
 
 	return &game{
 		isRunning: true,
+		fps:       150,
 		screen:    screen.NewScreen(),
 		words:     words,
 		letters:   letters,
@@ -130,6 +133,8 @@ func (g *game) Draw() {
 
 	// flush on screen
 	g.screen.Flush()
+
+	time.Sleep(time.Duration(g.fps) * time.Millisecond)
 }
 
 func (g *game) Before() {
@@ -240,4 +245,5 @@ func (g *game) ResetStage() {
 	g.letters = letters
 	g.busyPos = busyPos
 	g.selection = rand.Intn(Selection)
+	g.fps -= 10
 }

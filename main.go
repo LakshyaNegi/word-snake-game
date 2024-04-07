@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"snake-game/game"
-	"time"
 )
 
 func main() {
@@ -12,7 +11,6 @@ func main() {
 
 	for game.IsRunning() {
 		game.Draw()
-		time.Sleep(150 * time.Millisecond)
 		game.Update()
 	}
 

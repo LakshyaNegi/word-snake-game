@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"snake-game/screen"
@@ -120,16 +121,8 @@ func (g *game) Draw() {
 	}
 
 	// print words
-	for i := range g.words {
-		var word string
-		if i == g.selection {
-			word = "*" + g.words[i]
-		} else {
-			word = g.words[i]
-		}
-
-		g.screen.DrawAt(word, 0, Y+1+i)
-	}
+	word := "*" + g.words[g.selection]
+	g.screen.DrawAt(fmt.Sprintf("Word: %s", word), 0, Y+1)
 
 	// flush on screen
 	g.screen.Flush()

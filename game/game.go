@@ -1,10 +1,12 @@
 package game
 
 import (
+	"fmt"
 	"log"
 	"math/rand"
 	"snake-game/screen"
 	"snake-game/snake"
+	"time"
 
 	"snake-game/utils"
 	"strings"
@@ -29,6 +31,7 @@ type Game interface {
 
 type game struct {
 	isRunning bool
+	fps       int
 	score     int
 	screen    screen.Screen
 	letters   []utils.Block
@@ -70,6 +73,7 @@ func NewGame() Game {
 
 	return &game{
 		isRunning: true,
+		fps:       150,
 		screen:    screen.NewScreen(),
 		words:     words,
 		letters:   letters,
@@ -117,19 +121,13 @@ func (g *game) Draw() {
 	}
 
 	// print words
-	for i := range g.words {
-		var word string
-		if i == g.selection {
-			word = "*" + g.words[i]
-		} else {
-			word = g.words[i]
-		}
-
-		g.screen.DrawAt(word, 0, Y+1+i)
-	}
+	word := "*" + g.words[g.selection]
+	g.screen.DrawAt(fmt.Sprintf("Word: %s", word), 0, Y+1)
 
 	// flush on screen
 	g.screen.Flush()
+
+	time.Sleep(time.Duration(g.fps) * time.Millisecond)
 }
 
 func (g *game) Before() {
@@ -240,4 +238,5 @@ func (g *game) ResetStage() {
 	g.letters = letters
 	g.busyPos = busyPos
 	g.selection = rand.Intn(Selection)
+	g.fps -= 10
 }
